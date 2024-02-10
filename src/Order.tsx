@@ -1,11 +1,12 @@
 import { Component, SyntheticEvent } from "react"
-import { webhook_url } from "./webhook.env"
 
 interface State {
   nome: string
   contato: string
   pedido: string
 }
+
+const env = import.meta?.env ? import.meta.env : process.env
 
 export default class Order extends Component<NonNullable<unknown>, State> {
   constructor(props: NonNullable<unknown>) {
@@ -17,11 +18,9 @@ export default class Order extends Component<NonNullable<unknown>, State> {
   handleFormSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     
-    //interface WebhookMessage{content:string;};function sendMessageWithDiscordHook(discordWebhookUrl:string,contents:object){const i=new XMLHttpRequest();i.open('POST',discordWebhookUrl);i.setRequestHeader('Content-Type','application/json');try{i.send(contents);console.log('Message sent successfully!')}catch(j){console.log(`Message wasn't sent successfully, error: ${j}`)}}
-    
     const xhr = new XMLHttpRequest()
 
-    xhr.open('POST', webhook_url)
+    xhr.open('POST', env.VITE_WEBHOOK_URL);
     xhr.setRequestHeader('Content-Type', 'application/json')
 
     const data = JSON.stringify({
